@@ -11,11 +11,39 @@ class App extends React.Component {
       repos: []
     }
 
+    this.search = this.search.bind(this);
+
   }
 
   search (term) {
     console.log(`${term} was searched`);
     // TODO
+
+    var successCB = function(data) {
+      console.log("got data from the server",data);
+      var result = [];
+      data.forEach(element => {
+        result.push(element.name);
+      });
+
+      this.setState({
+        repos: result
+      });
+
+    };
+
+
+    $.ajax({
+      url: '/repos',
+      type: 'GET',
+      data: { user: `${term}` },
+      contentType: 'application/json',
+      success: successCB,
+      error: function(error) {
+        console.error('Failed to fetch repos', error);
+      }
+    });
+
   }
 
   render () {
