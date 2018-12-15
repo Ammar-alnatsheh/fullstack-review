@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../database');
 const bodyParser = require('body-parser');
+const getReposByUsername = require('../helpers/github');
 let app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -14,18 +15,27 @@ app.post('/repos', function (req, res) {
 
   var body = JSON.stringify(req.body);
   var userName = JSON.parse(body)['user'];
-  db.save(userName, (err) => {
+
+  getReposByUsername.getReposByUsername(userName,(err,repos => {
 
     if(err) {
-      console.log("ERROR cant save recoreds to db");
+      console.log("ERROR cant get repos from github",err);
       res.status(404).end();
 
     } else {
-      res.render('index');
-    }
+      db.save(repos, (err) => {
 
-  }); 
-  
+        if(err) {
+          console.log("ERROR cant save repos to database",err);
+          res.status(500).send(err);
+
+        } else {
+          res.render('index');
+
+        }
+      });
+    }
+  }));
 });
 
 app.get('/repos', function (req, res) {
