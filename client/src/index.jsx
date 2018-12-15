@@ -23,7 +23,7 @@ class App extends React.Component {
     $.ajax({
       url: '/repos',
       type: 'POST',
-      data: JSON.parse({ 'user': `${term}` }),
+      data: JSON.stringify({'user': `${term}`}),
       contentType: 'application/json',
       success: this.successCB,
       error: function(error) {
@@ -35,13 +35,9 @@ class App extends React.Component {
 
   successCB(data) {
     console.log("got data from the server",data);
-    var result = [];
-    data.forEach(element => {
-      result.push(element.name);
-    });
-
+    
     this.setState({
-      repos: result
+      repos: data
     });
 
   };

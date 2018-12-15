@@ -1,10 +1,18 @@
 import React from 'react';
+import RepoListEntity from './RepoListEntity.jsx';
 
-const RepoList = (props) => (
-  <div>
-    <h4> Repo List Component </h4>
-    There are {props.repos.length} repos.
-  </div>
-)
+const RepoList = (props) => {
+
+  const reposList = props.repos.map(repo => (
+    <RepoListEntity repo={repo} key={repo.id} />
+  ));
+
+  return (
+    <div className="repos-list">
+      <h3>numbers of repos: {props.repos.length}</h3>
+      {reposList}
+    </div>
+  );
+}
 
 export default RepoList;
