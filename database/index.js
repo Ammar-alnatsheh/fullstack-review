@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const getReposByUsername = require('../helpers/github');
+
 mongoose.connect('mongodb://localhost:27017/fetcher');
 
 let repoSchema = mongoose.Schema({
@@ -9,22 +9,20 @@ let repoSchema = mongoose.Schema({
 
 let Repo = mongoose.model('fetcher', repoSchema);
 
-let save = (userName, callback) => {
+let save = (repos, callback) => {
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
 
-  // var repos = getReposByUsername.getReposByUsername(userName);
-  
-  // repos.forEach(record => {
-  //   // apply an insert query to each repo 
-  //   Repo.create({ name: record }, function (err) {
+  repos.insertMany(repos)
+    .then( () => {
+      callback(null);
 
-  //     if (err)  callback(err);
-  //   });
-  //   callback(null);
-
-  // });
+    })
+    .catch( (err) => {
+      callback(err);
+        
+    });
 }
 
 let get = (callback) => {
