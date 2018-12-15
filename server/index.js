@@ -15,14 +15,15 @@ app.post('/repos', function (req, res) {
 
   var body = JSON.stringify(req.body);
   var userName = JSON.parse(body)['user'];
-
-  getReposByUsername.getReposByUsername(userName,(err,repos => {
+  console.log("we are in server");
+  getReposByUsername.getReposByUsername(userName,(err,sucess) =>{
 
     if(err) {
       console.log("ERROR cant get repos from github",err);
-      res.status(404).end();
+      res.status(404).end(err);
 
     } else {
+      repos = sucess.body;
       db.save(repos, (err) => {
 
         if(err) {
@@ -35,8 +36,11 @@ app.post('/repos', function (req, res) {
         }
       });
     }
-  }));
+
+  });
+
 });
+    
 
 app.get('/repos', function (req, res) {
   // TODO - your code here!
