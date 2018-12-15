@@ -4,6 +4,7 @@ mongoose.connect('mongodb://localhost:27017/fetcher');
 
 let repoSchema = mongoose.Schema({
   name: String,
+  html_url: String,
   updated: { type: Date, default: Date.now() }
 });
 
@@ -13,16 +14,18 @@ let save = (repos, callback) => {
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
+  console.log("we are in db");
 
-  repos.insertMany(repos)
-    .then( () => {
-      callback(null);
-
-    })
-    .catch( (err) => {
+  var repos = cleanRepos(repos);
+  Repo.insertMany(repos, (err,data) => {
+    if (err) {
       callback(err);
-        
-    });
+    } else {
+      callback(null);
+    }
+
+  });
+
 }
 
 let get = (callback) => {
@@ -37,6 +40,21 @@ let get = (callback) => {
   sort({ updated: -1 }).
   limit(25).
   exec(callback); // where callback is the name of our callback function.
+
+}
+
+let cleanRepos = (arr) => {
+
+  var result = [];
+
+  arr.forEach(repo => {
+    var obj = {};
+    obj['name'] = repo['name'];
+    obj['html_url'] = obj['html_url'];
+    result.push(obj);  
+  });
+
+  return result;
 
 }
 
