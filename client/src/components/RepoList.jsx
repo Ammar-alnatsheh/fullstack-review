@@ -4,7 +4,7 @@ import RepoListEntity from './RepoListEntity.jsx';
 const RepoList = (props) => {
 
   const reposList = props.repos.map(repo => (
-    <RepoListEntity repo={repo} key={repo.id} />
+    <RepoListEntity repo={repo} key={repo._id} />
   ));
 
   return (

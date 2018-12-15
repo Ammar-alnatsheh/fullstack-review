@@ -36,7 +36,7 @@ let get = (callback) => {
 
   Repo.
   find().
-  select('name','html_url').
+  select('_id','name','html_url').
   sort({ updated: -1 }).
   limit(25).
   exec(callback); // where callback is the name of our callback function.
