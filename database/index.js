@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const getReposByUsername = require('../helpers/github');
 mongoose.connect('mongodb://localhost:27017/fetcher');
 
 let repoSchema = mongoose.Schema({
@@ -8,20 +9,22 @@ let repoSchema = mongoose.Schema({
 
 let Repo = mongoose.model('fetcher', repoSchema);
 
-let save = (repos, callback) => {
+let save = (userName, callback) => {
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
+
+  // var repos = getReposByUsername.getReposByUsername(userName);
   
-  repos.forEach(record => {
-    // apply an insert query to each repo 
-    Repo.create({ name: record }, function (err) {
+  // repos.forEach(record => {
+  //   // apply an insert query to each repo 
+  //   Repo.create({ name: record }, function (err) {
 
-      if (err)  callback(err);
-    });
-    callback(null);
+  //     if (err)  callback(err);
+  //   });
+  //   callback(null);
 
-  });
+  // });
 }
 
 let get = (callback) => {
@@ -32,9 +35,9 @@ let get = (callback) => {
 
   Repo.
   find().
+  select('name').
   sort({ updated: -1 }).
   limit(25).
-  select('name').
   exec(callback); // where callback is the name of our callback function.
 
 }
