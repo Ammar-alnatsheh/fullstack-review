@@ -50,7 +50,7 @@ let cleanRepos = (arr) => {
   arr.forEach(repo => {
     var obj = {};
     obj['name'] = repo['name'];
-    obj['html_url'] = obj['html_url'];
+    obj['html_url'] = repo['html_url'];
     result.push(obj);  
   });
 
