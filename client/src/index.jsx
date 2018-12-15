@@ -23,7 +23,7 @@ class App extends React.Component {
     $.ajax({
       url: '/repos',
       type: 'POST',
-      data: JSON.stringify({ 'user': `${term}` }),
+      data: JSON.parse({ 'user': `${term}` }),
       contentType: 'application/json',
       success: this.successCB,
       error: function(error) {

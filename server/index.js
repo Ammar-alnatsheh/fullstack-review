@@ -13,9 +13,9 @@ app.post('/repos', function (req, res) {
   // and get the repo information from the github API, then
   // save the repo information in the database
 
-  var body = JSON.stringify(req.body);
-  var userName = JSON.parse(body)['user'];
-  console.log("we are in server");
+  var body = req.body;
+  var userName = body['user'];
+  console.log("we are in server", req.body);
   getReposByUsername.getReposByUsername(userName,(err,sucess) =>{
 
     if(err) {
@@ -23,7 +23,10 @@ app.post('/repos', function (req, res) {
       res.status(404).end(err);
 
     } else {
-      repos = sucess.body;
+      
+      var repos = sucess.body;
+      repos = JSON.parse(repos);
+      // console.log(sucess);
       db.save(repos, (err) => {
 
         if(err) {
@@ -31,7 +34,7 @@ app.post('/repos', function (req, res) {
           res.status(500).send(err);
 
         } else {
-          res.render('index');
+          res.send('hello world');
 
         }
       });
