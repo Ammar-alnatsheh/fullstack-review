@@ -21,7 +21,7 @@ let save = (repos, callback) => {
     if (err) {
       callback(err);
     } else {
-      callback(null);
+      callback(null,data);
     }
 
   });

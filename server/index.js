@@ -15,7 +15,8 @@ app.post('/repos', function (req, res) {
 
   var body = req.body;
   var userName = body['user'];
-  console.log("we are in server", req.body);
+
+  console.log("we are in server");
   getReposByUsername.getReposByUsername(userName,(err,sucess) =>{
 
     if(err) {
@@ -27,14 +28,14 @@ app.post('/repos', function (req, res) {
       var repos = sucess.body;
       repos = JSON.parse(repos);
       // console.log(sucess);
-      db.save(repos, (err) => {
+      db.save(repos, (err,data) => {
 
         if(err) {
           console.log("ERROR cant save repos to database",err);
           res.status(500).send(err);
 
         } else {
-          res.send('hello world');
+          res.status(201).send(data);
 
         }
       });
