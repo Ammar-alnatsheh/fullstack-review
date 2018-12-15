@@ -5,23 +5,26 @@ let app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.post('/repos', function (req, res) {
   // TODO - your code here!
   // This route should take the github username provided
   // and get the repo information from the github API, then
   // save the repo information in the database
-  
-  db.save(['ammar','bashar','manal'],(err,data) => {
 
-    if (err) {
+  var body = JSON.stringify(req.body);
+  var userName = JSON.parse(body)['user'];
+  db.save(userName, (err) => {
+
+    if(err) {
       console.log("ERROR cant save recoreds to db");
       res.status(404).end();
+
     } else {
-      res.send("sucessfully saved");
+      res.render('index');
     }
-  });
+
+  }); 
   
 });
 
