@@ -12,6 +12,7 @@ class App extends React.Component {
     }
 
     this.search = this.search.bind(this);
+    this.successCB = this.successCB.bind(this);
 
   }
 
@@ -19,32 +20,31 @@ class App extends React.Component {
     console.log(`${term} was searched`);
     // TODO
 
-    var successCB = function(data) {
-      console.log("got data from the server",data);
-      var result = [];
-      data.forEach(element => {
-        result.push(element.name);
-      });
-
-      this.setState({
-        repos: result
-      });
-
-    };
-
-
     $.ajax({
       url: '/repos',
       type: 'GET',
       data: { user: `${term}` },
       contentType: 'application/json',
-      success: successCB,
+      success: this.successCB,
       error: function(error) {
         console.error('Failed to fetch repos', error);
       }
     });
 
   }
+
+  successCB(data) {
+    console.log("got data from the server",data);
+    var result = [];
+    data.forEach(element => {
+      result.push(element.name);
+    });
+
+    this.setState({
+      repos: result
+    });
+
+  };
 
   render () {
     return (<div>
